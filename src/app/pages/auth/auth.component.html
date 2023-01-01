@@ -1,0 +1,18 @@
+
+<mat-drawer-container [autosize]="true" class="min-h-full max-w-7xl mx-auto border-x">
+    <mat-drawer-content class="p-6">
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup)" class="form" autocomplete="off">
+            <span class="flex justify-start">
+                <mat-form-field appearance="fill">
+                    <mat-label>Resrvation Id</mat-label>
+                    <input matInput type="text" placeholder="HMRBJSWW93" formControlName="reservationId">
+                    <mat-error *ngIf="reservationId.invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>            
+            </span>
+            <div class="form-element">
+                <button mat-button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Login</button>
+            </div>
+        </form>
+    </mat-drawer-content>
+</mat-drawer-container>
+
