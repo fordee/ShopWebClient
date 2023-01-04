@@ -18,6 +18,7 @@ export class CartService {
   order: Order | undefined;
 
   paymentMethod: string = 'cash';
+  notes: string = "";
 
   // orderSubscription: Subscription | undefined;
   // itemSubscription: Subscription | undefined;
@@ -67,7 +68,7 @@ export class CartService {
     } else { // TODO: if there is no existing order
       const timeElapsed = Date.now();
       const today = new Date(timeElapsed);
-      const newOrder = new Order(undefined, this.authService.user.value.reservationId, 'open', this.cart.value.items, {'$date': today.toISOString()}, undefined, false, this.paymentMethod);
+      const newOrder = new Order(undefined, this.authService.user.value.reservationId, 'open', this.cart.value.items, {'$date': today.toISOString()}, undefined, false, this.paymentMethod, this.notes);
       const path = `${STORE_BASE_API}/orders/`;
       this.http.post<Order>(path, newOrder).subscribe(_order => {
         this.order = _order;

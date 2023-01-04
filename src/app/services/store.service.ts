@@ -13,18 +13,30 @@ const STORE_BASE_API = environment.apiURL +  '/api/mongo'
 })
 export class StoreService {
 
+  pageNumber: Number = 0;
+
+  productCount: Number = 1;
+  
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getAllProducts(limit=12, sort='d'): Observable<Array<Product>> {
+  getAllProducts(limit=12, sort: string, pageIndex: number): Observable<Array<Product>> {
     const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
     return this.authService.user.pipe(take(1), exhaustMap(user => {
-      console.log('user: ' + user);
+      console.log('sort: ' + sort);
       console.log('reservationId: ' + user.reservationId);
       console.log('token: ' + user.token);
       httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
-      return this.http.get<Array<Product>>(`${STORE_BASE_API}/products`, httpOptions);
+      console.log(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + '/');
+      return this.http.get<Array<Product>>(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + '/', httpOptions);
     }));
   }
 
-  
+  getProductCount(): Observable<number> {
+    const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
+    return this.authService.user.pipe(take(1), exhaustMap(user => {
+      httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
+      console.log(`${STORE_BASE_API}/products/productCount`);
+      return this.http.get<number>(`${STORE_BASE_API}/products/productCount/`, httpOptions);
+    }));
+  }
 }

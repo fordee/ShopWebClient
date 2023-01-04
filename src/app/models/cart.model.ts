@@ -15,8 +15,8 @@ export class Order {
     public submittedTime: MongoDate | undefined,
     public deliveredTime: MongoDate | undefined,
     public paid: boolean,
-    public paymentMethod: string | undefined,) {}
-
+    public paymentMethod: string | undefined,
+    public notes: string | undefined, ) {}
     
 }
 

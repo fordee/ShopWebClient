@@ -22,8 +22,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   products: Array<Product> | undefined;
   orders: Array<Order> | undefined;
 
-  sort = 'desc';
-  count = 12;
+  sort = 'asc';
+  count = 3;
+  pageIndex = 0;
   
   productSubscription: Subscription | undefined;
   orderSubscription: Subscription | undefined;
@@ -53,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getProducts(): void {
-    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort)
+    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort, this.pageIndex)
       .subscribe({
         next: (_products)=> {this.products = _products;},
         error: (err)=>{console.log('error', err); this.router.navigate(['/auth']);},
@@ -87,6 +88,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cols = colsNumber;
     this.rowHeight = ROWS_HEIGHT[this.cols];
   }
+  
+  onPageIndexChange(newPageIndex: number): void {
+    console.log('onPageIndexChange');
+    this.pageIndex = newPageIndex;
+    this.getProducts();
+  }
+
+  onItemsCountChange(newCount: number): void {
+    this.count = newCount;
+    this.getProducts();
+  }
+
+  onSortChange(newSort: string): void {
+    this.sort = newSort; 
+    this.getProducts();
+  }
 
   onShowCategory(newCategory: string): void {
     this.category = newCategory;
@@ -102,4 +119,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       quantity: 1,
     }, order)
   }
+
+ 
 }

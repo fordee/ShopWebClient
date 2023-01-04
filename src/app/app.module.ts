@@ -33,6 +33,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { MatInputModule } from '@angular/material/input';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { OrdersComponent } from './pages/orders/orders.component';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
+    MatPaginatorModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule

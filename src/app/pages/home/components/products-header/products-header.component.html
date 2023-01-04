@@ -6,22 +6,37 @@
                 <mat-icon>expand_more</mat-icon>
             </button>
             <mat-menu #sortByMenu="matMenu">
-                <button (click)="onSortUpdated('desc')" mat-menu-item>desc</button>
                 <button (click)="onSortUpdated('asc')" mat-menu-item>asc</button>
+                <button (click)="onSortUpdated('desc')" mat-menu-item>desc</button>
             </mat-menu>
         </div>
+        
+        <div>
+            <mat-paginator #paginator
+               class="demo-paginator"
+               (page)="handlePageEvent($event)"
+               [length]="length"
+               [pageSize]="pageSize"
+               [disabled]="disabled"
+               [showFirstLastButtons]="showFirstLastButtons"
+               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+               [hidePageSize]="hidePageSize"
+               [pageIndex]="pageIndex"
+               aria-label="Select page">
+            </mat-paginator>
+        </div>
         <div class="flex items-center">
-            <div>
+            <!-- <div>
                 <button mat-button [matMenuTriggerFor]="menu">
                     Show {{ itemsShowCount }}
                     <mat-icon>expand_more</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                    <button (click)="onItemsUpdated(12)" mat-menu-item>12</button>
-                    <button (click)="onItemsUpdated(24)" mat-menu-item>24</button>
-                    <button (click)="onItemsUpdated(36)" mat-menu-item>36</button>
+                    <button (click)="onItemsUpdated(3)" mat-menu-item>3</button>
+                    <button (click)="onItemsUpdated(4)" mat-menu-item>4</button>
+                    <button (click)="onItemsUpdated(6)" mat-menu-item>6</button>
                 </mat-menu>
-            </div>
+            </div> -->
             <button (click)="onColumnsUpdated(1)">
                 <mat-icon>view_list</mat-icon>
             </button>
