@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Order } from 'src/app/models/cart.model';
 import { MongoDate } from 'src/app/models/product.model';
@@ -18,11 +19,13 @@ export class OrdersComponent implements OnInit {
     'status',
     'submittedTime',
     'deliveredTime',
-    'itemsCount'
+    'paid',
+    'itemsCount',
+    'actions'
   ];
 
   orderSubscription: Subscription | undefined;
-  constructor(private authService: AuthService, private ordersService: OrdersService) { }
+  constructor(private authService: AuthService, private ordersService: OrdersService, private router: Router) { }
 
   ngOnInit(): void {
     this.authService.autoLogin();
@@ -31,16 +34,11 @@ export class OrdersComponent implements OnInit {
 
   getOrders(): void {
     this.orderSubscription = this.ordersService.getAllOrders()
-      .subscribe((_orders) => {
-        this.orders = _orders;
-        console.log(_orders);
-        // if (this.orders && this.orders.length > 0) {
-        //   console.log('Order Id: ' + this.orders[0]._id?.$oid);
-        //   console.log('Item count: ' + this.orders[0].items.length);
-        // } else {
-        //   console.log('No orrders');
-        // }
-      })
+      .subscribe({
+        next: (_orders) => {this.orders = _orders;},
+        error: (err)=>{console.log('error', err); this.router.navigate(['/auth']);},
+        complete:()=>console.log('complete')
+      });
   }
 
   getDeliveredDate(deliveredTime: MongoDate | undefined ): string {
@@ -51,6 +49,11 @@ export class OrdersComponent implements OnInit {
     } else {
       return deliveredTime.$date;
     }
+  }
+
+  onOrderSummaryView(id: string) {
+    console.log(id);
+    this.router.navigate(['/summary', {'id': id}])
   }
 
 }

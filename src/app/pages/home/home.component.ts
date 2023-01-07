@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getProducts(): void {
-    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort, this.pageIndex)
+    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort, this.pageIndex, this.category)
       .subscribe({
         next: (_products)=> {this.products = _products;},
         error: (err)=>{console.log('error', err); this.router.navigate(['/auth']);},
@@ -107,6 +107,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onShowCategory(newCategory: string): void {
     this.category = newCategory;
+    
+    this.getProducts();
   }
 
   onAddToCart(product: Product): void {

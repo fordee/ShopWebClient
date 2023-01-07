@@ -34,6 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { OrderSummaryComponent } from './pages/order.summary/order.summary.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ProductBoxComponent,
     CartComponent,
     AuthComponent,
-    OrdersComponent
+    OrdersComponent,
+    OrderSummaryComponent
   ],
   imports: [
     BrowserModule,

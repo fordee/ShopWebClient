@@ -5,6 +5,7 @@ import { Order } from '../models/cart.model';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 
+
 const ORDERS_BASE_API = environment.apiURL + '/api/mongo'
 
 @Injectable({
@@ -22,6 +23,18 @@ export class OrdersService {
       console.log('token: ' + user.token);
       httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
       return this.http.get<Array<Order>>(`${ORDERS_BASE_API}/orders/` + user.reservationId + '/submitted,delivered', httpOptions);
+    }));
+  }
+
+  getOrder(id: string): Observable<Order> {
+    console.log('order service');
+    const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
+    return this.authService.user.pipe(take(1), exhaustMap(user => {
+      console.log('user: ' + user);
+      console.log('reservationId: ' + user.reservationId);
+      console.log('token: ' + user.token);
+      httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
+      return this.http.get<Order>(`${ORDERS_BASE_API}/orders/order/` + id, httpOptions);
     }));
   }
 

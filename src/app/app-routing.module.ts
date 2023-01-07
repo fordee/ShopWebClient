@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { OrderSummaryComponent } from './pages/order.summary/order.summary.component';
 
 const routes: Routes = [{
   path: 'home',
@@ -22,8 +23,12 @@ const routes: Routes = [{
   component: AuthComponent
 },
 {
+  path: 'summary',
+  component: OrderSummaryComponent
+},
+{
   path: '', redirectTo: 'home', pathMatch: 'full'
-}];
+},];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

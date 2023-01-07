@@ -52,6 +52,7 @@ export class CartService {
   }
 
   updatePaymentMethod(paymentMethod: string) {
+    console.log('updatePaymentMethod');
     this.paymentMethod = paymentMethod;
   }
 
@@ -158,6 +159,7 @@ export class CartService {
     console.log('Submit Order');
     //const statusUpdate = new StatusUpdate('submitted');
     const statusItemsUpdate = new StatusItemsUpdate('submitted', this.cart.value.items, this.paymentMethod);
+    console.log(this.paymentMethod);
     if (this.order) {
       const path = `${STORE_BASE_API}/orders/` + this.order?._id?.$oid + '/updateStatus';
       this.http.patch<Order>(path, statusItemsUpdate).subscribe(_order => {

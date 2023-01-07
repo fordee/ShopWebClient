@@ -1,0 +1,97 @@
+
+<mat-card *ngIf="order" class="max-w-7xl mx-auto">
+    <h1>Order Details</h1>
+    <mat-card>
+        <table>
+            <tr>
+                <td class="font-bold px-5 py-2 block">
+                  Reservation Id:
+                </td>
+                <td>
+                  {{order.reservationId}}
+                </td>
+              </tr>
+            <tr>
+              <td class="font-bold px-5 py-2 block">
+                Order Id:
+              </td>
+              <td>
+                {{order._id?.$oid}}
+              </td>
+            </tr>
+            <tr>
+                <td class="font-bold px-5 py-2 block">
+                    Status:
+                </td>
+                <td>
+                    {{order.status}}
+                </td>
+              </tr>
+              <tr>
+                <td class="font-bold px-5 py-2 block">
+                    Order Date/Time:
+                </td>
+                <td>
+                    {{order.submittedTime?.$date | date : 'd MMM yyyy, h:mm aa'}}
+                </td>
+              </tr>
+              <tr *ngIf="order.deliveredTime">
+                <td class="font-bold px-5 py-2 block">
+                    Delivery Date/Time:
+                </td>
+                <td>
+                    {{order.deliveredTime.$date | date : 'd MMM yyyy, h:mm aa'}}
+                </td>
+              </tr>
+              <tr>
+                <td class="font-bold px-5 py-2 block">
+                    Payment Method:
+                </td>
+                <td>
+                    {{getPaymentType(order.paymentMethod!)}}
+                </td>
+              </tr>
+        </table>
+        <table mat-table [dataSource]="order.items" class="mat-elevation-z8 w-full">
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>Product</th>
+                <td mat-cell *matCellDef="let element">
+                    <img cImg thumbnail width="40" src="{{imagePath + element.product.imagePath}}" alt="product" class="my-5" />
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Item </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="truncate max-w-xs block">{{ element.product.name }}</span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="truncate max-w-xs block">{{ element.quantity }}</span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> 
+                    <span class="font-bold py-5 block">
+                        Total
+                    </span>                     
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="truncate max-w-xs block">{{ element.price | currency }}</span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> 
+                    <span class="font-bold py-5 block">
+                        {{ getTotal(order.items) | currency }}
+                    </span>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </table>
+    </mat-card>
+</mat-card>

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { delay, Subscription } from 'rxjs';
 import { Cart, MongoItem, Order } from 'src/app/models/cart.model';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
@@ -30,7 +31,7 @@ export class CartComponent implements OnInit, OnDestroy {
     'action',
   ];
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
     this.imagePath = environment.imagePath;
@@ -75,6 +76,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onUpdatePaymentMethod(newPaymentMethod: string): void {
     this.paymentMethod = newPaymentMethod;
+    this.cartService.paymentMethod = this.paymentMethod
     console.log('Payment method: ' + newPaymentMethod);
   }
 
@@ -82,6 +84,22 @@ export class CartComponent implements OnInit, OnDestroy {
     console.log('items:');
     console.log(this.cart.items);
     this.cartService.submitOrder();
+    delay(1000); // Delay to set the status before we query the order.
+    this.router.navigate(["summary", {'id': this.cartService.order?._id?.$oid}])
+  }
+
+  getPaymentType(type: string): string {
+    switch(type) {
+      case 'internetBanking':
+        return 'Internet Banking';
+      case 'viaAirBnB':
+        return 'Pay via AirBnB';
+      case 'cash':
+        return 'Pay with cash';
+      case 'Select Payment Method':
+        return 'Select Payment Method';
+    }
+    return ''
   }
 
 }

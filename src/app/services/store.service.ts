@@ -19,15 +19,18 @@ export class StoreService {
   
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getAllProducts(limit=12, sort: string, pageIndex: number): Observable<Array<Product>> {
+  getAllProducts(limit=12, sort: string, pageIndex: number, category?: string): Observable<Array<Product>> {
+    console.log('category1: ' + category);
     const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
+    const categoryQuery = category ? '/?category=' + category : '';
+    console.log('categoryQuery: ' + categoryQuery);
     return this.authService.user.pipe(take(1), exhaustMap(user => {
       console.log('sort: ' + sort);
       console.log('reservationId: ' + user.reservationId);
       console.log('token: ' + user.token);
       httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
-      console.log(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + '/');
-      return this.http.get<Array<Product>>(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + '/', httpOptions);
+      console.log(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + categoryQuery);
+      return this.http.get<Array<Product>>(`${STORE_BASE_API}/products/paged/` + sort + '/' + limit + '/' + pageIndex + categoryQuery, httpOptions);
     }));
   }
 

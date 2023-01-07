@@ -70,7 +70,7 @@
                 
                 <div class="flex justify-between">                                   
                     <button mat-button [matMenuTriggerFor]="menu" class="float-right">
-                        {{paymentMethod}}
+                        {{getPaymentType(paymentMethod)}}
                         <mat-icon>expand_more</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
