@@ -39,15 +39,13 @@ export class CartService {
 
   patchItemToOrder(item: MongoItem, order: Order | null): void {
     if (order?._id?.$oid) { 
-      console.log('There IS existing order');
       const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
       const path = `${STORE_BASE_API}/orders/` + order?._id.$oid + '/addOrderItem';
-      console.log(path);
       this.authService.user.pipe(take(1), exhaustMap(user => {
         httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
         return this.http.patch<MongoItem>(path, item)})); 
     } else {// TODO: if there is no existing order
-      console.log('There is nO existing order');
+      console.log('There is no existing order');
     }
   }
 
@@ -161,7 +159,7 @@ export class CartService {
     const statusItemsUpdate = new StatusItemsUpdate('submitted', this.cart.value.items, this.paymentMethod);
     console.log(this.paymentMethod);
     if (this.order) {
-      const path = `${STORE_BASE_API}/orders/` + this.order?._id?.$oid + '/updateStatus';
+      const path = `${STORE_BASE_API}/orders/` + this.order?._id?.$oid + '/updateStatusItems';
       this.http.patch<Order>(path, statusItemsUpdate).subscribe(_order => {
         console.log('submitted');
         this.cart.next({status: 'submitted', items: [], paymentMethod: this.paymentMethod});;

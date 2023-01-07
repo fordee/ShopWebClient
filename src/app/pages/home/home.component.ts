@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { Order } from 'src/app/models/cart.model';
 import { Product } from 'src/app/models/product.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
-import { LoggingService } from 'src/app/services/logging.service';
 import { StoreService } from 'src/app/services/store.service';
 
 const ROWS_HEIGHT: { [id:number]: number } = { 1: 400, 3: 335, 4: 350 };
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private cartService: CartService, 
               private storeService: StoreService, 
-              private loggingService: LoggingService,
+              private _snackBar: MatSnackBar,
               private authService: AuthService,
               private router: Router) { }
 
@@ -114,12 +114,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   onAddToCart(product: Product): void {
     const order = (this.orders && this.orders.length > 0) ? this.orders[0] : null;
 
-    console.log(product._id);
+    // Reduce product stock by 1
+    let index = this.products?.indexOf(product);
+    console.log('index: ' + index);
+    if (this.products && index != undefined) {
+      console.log('index: ' + index);
+      console.log(this.products[index].stock);
+      if (this.products[index].stock <= 0) {
+        this._snackBar.open('There is no stock of that item left. Cannot order anymore.', 'Ok', { duration: 3000});
+        return;
+      }
+      this.products[index].stock--;
+      // update product to new stock amount.
+      this.storeService.updateProduct(this.products[index])
+        .subscribe();
+    }
+    
+
     this.cartService.addToCart({
       product: product,
       price: product.sellingPrice,
       quantity: 1,
     }, order)
+    
   }
 
  
