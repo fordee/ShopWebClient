@@ -19,7 +19,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
   displayedColumns: Array<string> = [
     'image',
-    'name',
     'quantity',
     'price',
   ];

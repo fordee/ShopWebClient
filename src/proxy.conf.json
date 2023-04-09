@@ -1,6 +1,6 @@
 {
     "/api": {
-      "target": "http://194.195.251.227:8080",
+      "target": "https://chikakos-shop.com:8080",
       "secure": false,
       "pathRewrite": {
         "^/mongo/api": ""

@@ -7,14 +7,16 @@ import { Product } from 'src/app/models/product.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { StoreService } from 'src/app/services/store.service';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
-const ROWS_HEIGHT: { [id:number]: number } = { 1: 400, 3: 335, 4: 350 };
+const ROWS_HEIGHT: { [id:number]: number } = { 1: 275, 3: 350, 4: 350 };
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  mobile = false;
   cols = 3;
   rowHeight = ROWS_HEIGHT[this.cols];
   category: string | undefined;
@@ -23,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   orders: Array<Order> | undefined;
 
   sort = 'asc';
-  count = 3;
+  count = 12;
   pageIndex = 0;
   
   productSubscription: Subscription | undefined;
@@ -35,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
               private storeService: StoreService, 
               private _snackBar: MatSnackBar,
               private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private responsive: BreakpointObserver) { }
 
   ngOnDestroy(): void {
     if (this.productSubscription) {
@@ -47,10 +50,34 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.responsive.observe([
+      Breakpoints.TabletPortrait,
+      Breakpoints.HandsetPortrait,
+      Breakpoints.XSmall])
+      .subscribe(result => {
+        console.log("Result");
+        console.log(result);
+        const breakpoints = result.breakpoints;
+    
+        if (breakpoints[Breakpoints.TabletPortrait]) {
+          console.log("screens matches TabletPortrait");
+          this.mobile = false;
+        }
+        else if (breakpoints[Breakpoints.HandsetLandscape]) {
+          console.log("screens matches HandsetLandscape");
+          this.mobile = false;
+        } else if (breakpoints[Breakpoints.XSmall]) {
+          console.log("screens matches XSmall");
+          this.cols = 1;
+          this.mobile = true;
+        }
+    
+      });
     this.authService.autoLogin();
     this.getProducts();
     this.getOrders();
     //console.log('home onInit: ' + this.orders?.length);
+ 
   }
 
   getProducts(): void {

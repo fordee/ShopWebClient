@@ -1,7 +1,9 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay, Subscription } from 'rxjs';
 import { Cart, MongoItem, Order } from 'src/app/models/cart.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,10 +18,11 @@ export class CartComponent implements OnInit, OnDestroy {
   //orderSubscription: Subscription | undefined;
   cartSubscription: Subscription | undefined;
   imagePath = '';
+  mobile = false;
 
   //reservationId = "HMRBJSWW93";
 
-  paymentMethod = "Select Payment Method";
+  paymentMethod = "Payment Method";
 
   dataSource: Array<MongoItem> = [];
   displayedColumns: Array<string> = [
@@ -31,9 +34,37 @@ export class CartComponent implements OnInit, OnDestroy {
     'action',
   ];
 
-  constructor(private cartService: CartService, private router: Router) { }
+  constructor(private cartService: CartService, 
+              private router: Router,
+              private authService: AuthService,
+              private responsive: BreakpointObserver) { }
 
   ngOnInit(): void {
+    this.authService.autoLogin();
+    this.responsive.observe([
+      Breakpoints.TabletPortrait,
+      Breakpoints.HandsetPortrait,
+      Breakpoints.XSmall])
+      .subscribe(result => {
+        console.log("Result");
+        console.log(result);
+        const breakpoints = result.breakpoints;
+    
+        if (breakpoints[Breakpoints.TabletPortrait]) {
+          console.log("screens matches TabletPortrait");
+          this.mobile = false;
+        }
+        else if (breakpoints[Breakpoints.HandsetLandscape]) {
+          console.log("screens matches HandsetLandscape");
+          this.mobile = false;
+        } else if (breakpoints[Breakpoints.XSmall]) {
+          console.log("screens matches XSmall");
+          this.mobile = true;
+        }
+    
+      });
+    
+
     this.imagePath = environment.imagePath;
     
     this.cartSubscription = this.cartService.cart.subscribe((_cart: Cart) => {
@@ -96,8 +127,8 @@ export class CartComponent implements OnInit, OnDestroy {
         return 'Pay via AirBnB';
       case 'cash':
         return 'Pay with cash';
-      case 'Select Payment Method':
-        return 'Select Payment Method';
+      case 'Payment Method':
+        return 'Payment Method';
     }
     return ''
   }

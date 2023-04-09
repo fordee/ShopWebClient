@@ -35,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { OrderSummaryComponent } from './pages/order.summary/order.summary.component';
+import { ProductsFooterComponent } from './pages/home/components/products-footer/products-footer.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { OrderSummaryComponent } from './pages/order.summary/order.summary.compo
     CartComponent,
     AuthComponent,
     OrdersComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    ProductsFooterComponent
   ],
   imports: [
     BrowserModule,

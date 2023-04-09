@@ -1,5 +1,5 @@
 <mat-card *ngIf="product" [ngClass]="{'text-center': !fullWidthMode}">
-    <div [ngClass]="{flex: fullWidthMode}">
+    <div [ngClass]="{flex: fullWidthMode && !mobile}">
         <img class="mb-1 mx-auto h-[200px]"
             [ngClass]="{'h-[200px]': !fullWidthMode, 'h-200px': fullWidthMode}"
             src="{{imagePath + product.imagePath}}"
@@ -8,7 +8,7 @@
             [ngClass]="{'px-8 flex flex-col justify-between': fullWidthMode}">
             <div>
                 <p class="font-bold">{{product.name}}</p>
-                <p class="truncate hover:whitespace-normal">{{product.description}}</p>
+                <p *ngIf="!fullWidthMode" class="truncate hover:whitespace-normal">{{product.description}}</p>
                 <p *ngIf="fullWidthMode">{{product.description}} </p>
                 <p> Stock: {{product.stock}}</p>
             </div>

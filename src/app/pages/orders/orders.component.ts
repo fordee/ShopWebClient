@@ -15,12 +15,12 @@ export class OrdersComponent implements OnInit {
 
   displayedColumns: Array<string> = [
     'id',
-    'reservationId',
+    //'reservationId',
     'status',
     'submittedTime',
     'deliveredTime',
-    'paid',
-    'itemsCount',
+    //'paid',
+    //'itemsCount',
     'actions'
   ];
 
