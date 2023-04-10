@@ -38,13 +38,9 @@ export class AuthComponent implements OnInit,OnDestroy {
 
   onSubmit(formGroup: FormGroup) {
     this.reservationId = formGroup.value;
-    console.log(this.reservationId.reservationId);
     this.userSubscription = this.authService.getAuthToken(this.reservationId.reservationId).subscribe(resData => {
-      console.log(resData);
       this.router.navigate(['/home']);
     })
-    
-    //console.log('token: ' + token.)
     formGroup.reset();
   }
 

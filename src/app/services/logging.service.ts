@@ -9,6 +9,5 @@ export class LoggingService {
 
   log(message: string) {
     const currentDate = new Date().toLocaleString();
-    console.log(currentDate + ': '+ message);
   }
 }

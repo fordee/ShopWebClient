@@ -37,13 +37,11 @@ export class OrdersComponent implements OnInit {
       .subscribe({
         next: (_orders) => {this.orders = _orders;},
         error: (err)=>{console.log('error', err); this.router.navigate(['/auth']);},
-        complete:()=>console.log('complete')
+        complete:()=>{}
       });
   }
 
   getDeliveredDate(deliveredTime: MongoDate | undefined ): string {
-    console.log('getDeliveredDate');
-    console.log(deliveredTime);
     if (deliveredTime === undefined) {
       return '';
     } else {
@@ -52,7 +50,6 @@ export class OrdersComponent implements OnInit {
   }
 
   onOrderSummaryView(id: string) {
-    console.log(id);
     this.router.navigate(['/summary', {'id': id}])
   }
 

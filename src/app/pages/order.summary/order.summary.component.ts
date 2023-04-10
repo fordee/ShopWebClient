@@ -28,7 +28,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
      this.id = this.route.snapshot.paramMap.get('id');
-     console.log(this.id);
      this.imagePath = environment.imagePath
      this.getOrder()
   }
@@ -40,13 +39,10 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
   }
 
   getOrder(): void {
-    console.log('getOrder');
     if (this.id) {
     this.orderSubscription = this.ordersService.getOrder(this.id)
       .subscribe((_order) => {
         this.order = _order;
-        console.log(_order);
-        console.log('got Order');
       })
     }
   }

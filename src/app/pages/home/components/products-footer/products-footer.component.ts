@@ -35,18 +35,14 @@ export class ProductsFooterComponent implements OnInit {
   // }
 
   handlePageEvent(pageEvent: PageEvent): void {
-    console.log('PageEvent')
 
     if (this.itemsShowCount != pageEvent.pageSize) {
-      console.log('pageSize: ' + pageEvent.pageSize)
       this.itemsShowCount = pageEvent.pageSize;
       this.itemsCountChange.emit(this.itemsShowCount);
     }
     if (this.pageIndex != pageEvent.pageIndex) {
-      
       this.pageIndex = pageEvent.pageIndex;
       this.pageIndexChange.emit(this.pageIndex);
-      console.log('pageIndex: ' + this.pageIndex)
     }
   }
 

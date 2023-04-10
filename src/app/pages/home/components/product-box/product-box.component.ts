@@ -35,19 +35,14 @@ export class ProductBoxComponent implements OnInit {
       Breakpoints.HandsetPortrait,
       Breakpoints.XSmall])
       .subscribe(result => {
-        console.log("Result");
-        console.log(result);
         const breakpoints = result.breakpoints;
     
         if (breakpoints[Breakpoints.TabletPortrait]) {
-          console.log("screens matches TabletPortrait");
           this.mobile = false;
         }
         else if (breakpoints[Breakpoints.HandsetLandscape]) {
-          console.log("screens matches HandsetLandscape");
           this.mobile = false;
         } else if (breakpoints[Breakpoints.XSmall]) {
-          console.log("screens matches XSmall");
           this.mobile = true;
         }
     

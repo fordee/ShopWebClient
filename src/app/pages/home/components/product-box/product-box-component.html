@@ -1,4 +1,8 @@
 <mat-card *ngIf="product" [ngClass]="{'text-center': !fullWidthMode}">
+    <mat-card-header>
+        <mat-card-title *ngIf="!fullWidthMode" class="truncate hover:whitespace-normal">{{product.name}}</mat-card-title>
+        <mat-card-title *ngIf="fullWidthMode">{{product.name}}</mat-card-title>
+    </mat-card-header>
     <div [ngClass]="{flex: fullWidthMode && !mobile}">
         <img class="mb-1 mx-auto h-[200px]"
             [ngClass]="{'h-[200px]': !fullWidthMode, 'h-200px': fullWidthMode}"
@@ -7,7 +11,6 @@
         <div class="w-full"
             [ngClass]="{'px-8 flex flex-col justify-between': fullWidthMode}">
             <div>
-                <p class="font-bold">{{product.name}}</p>
                 <p *ngIf="!fullWidthMode" class="truncate hover:whitespace-normal">{{product.description}}</p>
                 <p *ngIf="fullWidthMode">{{product.description}} </p>
                 <p> Stock: {{product.stock}}</p>

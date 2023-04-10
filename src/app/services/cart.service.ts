@@ -29,7 +29,6 @@ export class CartService {
     const statusFilter = new StatusFilter(['open']);
     const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
     
-    console.log(statusFilter);
     return this.authService.user.pipe(take(1), exhaustMap(user => {
       httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
       return this.http.get<Array<Order>>(`${STORE_BASE_API}/orders/` + user.reservationId + '/open', httpOptions);
@@ -45,21 +44,17 @@ export class CartService {
         httpOptions.headers = httpOptions.headers.set('Authorization', 'BEARER ' + user.token);
         return this.http.patch<MongoItem>(path, item)})); 
     } else {// TODO: if there is no existing order
-      console.log('There is no existing order');
     }
   }
 
   updatePaymentMethod(paymentMethod: string) {
-    console.log('updatePaymentMethod');
     this.paymentMethod = paymentMethod;
   }
 
   updateOrderItems(): void {
     if (this.order?._id?.$oid) { 
       const path = `${STORE_BASE_API}/orders/` + this.order?._id.$oid + '/updateStatusItems';
-      console.log(path);
       this.cart.value.paymentMethod = this.paymentMethod;
-      console.log(this.cart.value);
       this.http.patch<MongoItem>(path, this.cart.value).subscribe((_item) => {
         // console.log('PATCH')
         // console.log(_item);
@@ -91,18 +86,14 @@ export class CartService {
   addToCart(item: MongoItem, order: Order | null): void {
     const items = [...this.cart.value.items];
     const itemInCart = items.find((_item) => _item.product._id.$oid === item.product._id.$oid);
-    console.log(itemInCart);
     if (itemInCart) {
-      console.log('Item in cart')
       itemInCart.quantity += 1;
     } else {
-      console.log('Item NOT in cart')
       items.push(item);
     }
 
     this.cart.next({status: 'open', items: items, paymentMethod: undefined});
     this._snackBar.open( item.product.name + ' added to cart.', 'Ok', { duration: 3000 });
-    console.log(this.cart.value);
     this.updateOrderItems();
   }
 
@@ -117,7 +108,6 @@ export class CartService {
   }
 
   removeFromCart(item: MongoItem, update = true): Array<MongoItem> {
-    console.log('removeQuantity: ' + this.order?._id)
     const filteredItems: Array<MongoItem> = this.cart.value.items.filter(
       (_item) => _item.product._id !== item.product._id
     );
@@ -154,14 +144,11 @@ export class CartService {
   }
 
   submitOrder(): void {
-    console.log('Submit Order');
     //const statusUpdate = new StatusUpdate('submitted');
     const statusItemsUpdate = new StatusItemsUpdate('submitted', this.cart.value.items, this.paymentMethod);
-    console.log(this.paymentMethod);
     if (this.order) {
       const path = `${STORE_BASE_API}/orders/` + this.order?._id?.$oid + '/updateStatusItems';
       this.http.patch<Order>(path, statusItemsUpdate).subscribe(_order => {
-        console.log('submitted');
         this.cart.next({status: 'submitted', items: [], paymentMethod: this.paymentMethod});;
         this._snackBar.open('Your order was submitted.', 'Ok', {duration: 3000});
         this.order = undefined;

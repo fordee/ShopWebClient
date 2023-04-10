@@ -9,7 +9,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { StoreService } from 'src/app/services/store.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
-const ROWS_HEIGHT: { [id:number]: number } = { 1: 275, 3: 350, 4: 350 };
+const ROWS_HEIGHT: { [id:number]: number } = { 1: 325, 3: 375, 4: 375 };
 
 @Component({
   selector: 'app-home',
@@ -55,19 +55,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       Breakpoints.HandsetPortrait,
       Breakpoints.XSmall])
       .subscribe(result => {
-        console.log("Result");
-        console.log(result);
         const breakpoints = result.breakpoints;
     
         if (breakpoints[Breakpoints.TabletPortrait]) {
-          console.log("screens matches TabletPortrait");
           this.mobile = false;
         }
         else if (breakpoints[Breakpoints.HandsetLandscape]) {
-          console.log("screens matches HandsetLandscape");
           this.mobile = false;
         } else if (breakpoints[Breakpoints.XSmall]) {
-          console.log("screens matches XSmall");
           this.cols = 1;
           this.mobile = true;
         }
@@ -85,13 +80,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (_products)=> {this.products = _products;},
         error: (err)=>{console.log('error', err); this.router.navigate(['/auth']);},
-        complete:()=>console.log('complete')
+        complete:()=>{}
       });
-      // .subscribe(
-      //   (_products) => {
-      //   this.products = _products;
-      // }, error=> { console.log("error: "); console.log(error)})
-
   }
 
   getOrders(): void {
@@ -100,12 +90,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         (_orders) => {
         this.orders = _orders;
         if (this.orders && this.orders.length > 0) {
-          console.log('Order Id: ' + this.orders[0]._id?.$oid);
-          console.log('Item count: ' + this.orders[0].items.length);
           this.cartService.cart.next({status: 'open', items: this.orders[0].items, paymentMethod: undefined});
           this.cartService.order = this.orders[0];
         } else {
-          console.log('No orrders');
+
         }
       })
   }
@@ -117,7 +105,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   onPageIndexChange(newPageIndex: number): void {
-    console.log('onPageIndexChange');
     this.pageIndex = newPageIndex;
     this.getProducts();
   }
@@ -134,19 +121,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onShowCategory(newCategory: string): void {
     this.category = newCategory;
-    
     this.getProducts();
   }
 
   onAddToCart(product: Product): void {
     const order = (this.orders && this.orders.length > 0) ? this.orders[0] : null;
-
     // Reduce product stock by 1
     let index = this.products?.indexOf(product);
-    console.log('index: ' + index);
+
     if (this.products && index != undefined) {
-      console.log('index: ' + index);
-      console.log(this.products[index].stock);
       if (this.products[index].stock <= 0) {
         this._snackBar.open('There is no stock of that item left. Cannot order anymore.', 'Ok', { duration: 3000});
         return;
@@ -157,13 +140,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe();
     }
     
-
     this.cartService.addToCart({
       product: product,
       price: product.sellingPrice,
       quantity: 1,
     }, order)
-    
   }
 
  
