@@ -52,6 +52,13 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
       }
   }
 
+  cancelOrder(): void {
+    console.log(this.order);
+    if (this.order != undefined) {
+      this.ordersService.updateStatus(this.order, 'cancelled');
+    }
+  }
+
   getOrder(): void {
     if (this.id) {
     this.orderSubscription = this.ordersService.getOrder(this.id)

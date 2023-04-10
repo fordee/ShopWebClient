@@ -23,7 +23,7 @@
                 <td class="font-bold px-5 py-2 block">
                     Status:
                 </td>
-                <td class="capitalize">
+                <td [ngStyle]="{'color':order.status=='delivered' ? 'green': order.status=='cancelled' ? 'red' : 'blue'}"  class="capitalize">
                     {{order.status}}
                 </td>
               </tr>
@@ -52,6 +52,9 @@
                 </td>
               </tr>
         </table>
+        <div *ngIf="order.status=='submitted'" class="px-5 py-5">
+            <button mat-raised-button color="warn" (click)="cancelOrder()">Cancel Order</button>
+        </div>
         <table mat-table [dataSource]="order.items" class="mat-elevation-z8 w-full">
             <ng-container matColumnDef="image">
                 <th mat-header-cell *matHeaderCellDef>Product</th>
