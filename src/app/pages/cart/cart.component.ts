@@ -102,10 +102,29 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   onClearCart(): void {
+    //First, return the stock back to the products.
+    for (var item of this.cart.items) {
+      var index = this.getIndexOfProduct(item.product);
+      if (this.products && index != -1) {
+        // Return the quantity back to the stock levels.
+        this.products[index].stock += item.quantity;
+        this.storeService.updateProduct(this.products[index])
+          .subscribe();
+      }
+    }
+    
     this.cartService.clearCart();
   }
 
   onRemoveFromCart(item: MongoItem): void {
+    var index = this.getIndexOfProduct(item.product);
+    //console.log('item.quantity: ' + item.quantity);
+    if (this.products && index != -1) {
+      // Return the quantity back to the stock levels.
+      this.products[index].stock += item.quantity;
+      this.storeService.updateProduct(this.products[index])
+        .subscribe();
+    }
     this.cartService.removeFromCart(item, true);
   }
 
@@ -188,10 +207,10 @@ export class CartComponent implements OnInit, OnDestroy {
     var index = 0
     if (this.products != undefined) {
       var found = false
-      for (var fred of this.products) {
-        // console.log(fred._id.$oid);
+      for (var prod of this.products) {
+        // console.log(prod._id.$oid);
         // console.log(item.product._id.$oid);
-        if (fred._id.$oid == product._id.$oid) {
+        if (prod._id.$oid == product._id.$oid) {
           found = true;
           //console.log('found!');
           break;

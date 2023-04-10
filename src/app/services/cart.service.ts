@@ -103,7 +103,10 @@ export class CartService {
   }
 
   clearCart(): void {
-    this.cart.next({status: 'open', items: [], paymentMethod: undefined });;
+    this.cart.next({status: 'open', items: [], paymentMethod: undefined });
+    if (this.order) {
+      this.updateOrderItems();
+    }
     this._snackBar.open('Cart is cleared.', 'Ok', {duration: 3000});
   }
 
@@ -135,11 +138,14 @@ export class CartService {
     });
 
     if (itemForRemoval) {
-      filteredItems = this.removeFromCart(itemForRemoval, false);
+      console.log(itemForRemoval);
+      filteredItems = this.removeFromCart(itemForRemoval, true);
+      console.log(filteredItems);
     } else {
       this.updateOrderItems();
     }
     this.cart.next({status: 'open', items: filteredItems, paymentMethod: undefined});
+    console.log(this.cart);
     this._snackBar.open('1 item revomved from cart.', 'Ok', { duration: 3000});
   }
 
