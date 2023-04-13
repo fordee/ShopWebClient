@@ -2,7 +2,7 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, exhaustMap, Observable, shareReplay, Subscription, take, tap, throwError } from 'rxjs';
-import { Cart, MongoItem, Order, StatusFilter, StatusItemsUpdate, StatusUpdate } from '../models/cart.model';
+import { Cart, MongoItem, Order, StatusFilter, StatusItemsUpdate, StatusUpdate, Token } from '../models/cart.model';
 import { AuthService } from './auth.service';
 import { MongoId } from '../models/product.model';
 import { environment } from 'src/environments/environment';
@@ -138,14 +138,14 @@ export class CartService {
     });
 
     if (itemForRemoval) {
-      console.log(itemForRemoval);
+      //console.log(itemForRemoval);
       filteredItems = this.removeFromCart(itemForRemoval, true);
-      console.log(filteredItems);
+      //console.log(filteredItems);
     } else {
       this.updateOrderItems();
     }
     this.cart.next({status: 'open', items: filteredItems, paymentMethod: undefined});
-    console.log(this.cart);
+    //console.log(this.cart);
     this._snackBar.open('1 item revomved from cart.', 'Ok', { duration: 3000});
   }
 

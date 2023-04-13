@@ -45,3 +45,9 @@ export class StatusFilter {
         public statuses: string[]
     ) {}
 }
+
+export class Token {
+    constructor(
+        public token: string
+    ) {}
+}

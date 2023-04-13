@@ -185,7 +185,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onSubmitOrder(): void {
     this.cartService.submitOrder();
-    delay(1000); // Delay to set the status before we query the order.
+    delay(1500); // Delay to set the status before we query the order.
     this.router.navigate(["summary", {'id': this.cartService.order?._id?.$oid}])
   }
 

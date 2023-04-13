@@ -81,6 +81,8 @@ export class ProductsHeaderComponent implements OnInit {
   }
 
   onShowCategory(category: string): void {
+    console.log('category: ' + category);
+    
     this.showCategory.emit(category);
   }
 

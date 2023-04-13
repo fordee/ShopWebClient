@@ -39,9 +39,9 @@ export class OrdersService {
 
     const httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
     const path = `${ORDERS_BASE_API}/orders/` + order?._id?.$oid + '/updateStatus';
-    console.log(statusUpdate)
+    //console.log(statusUpdate)
     this.http.patch<Order>(path, statusUpdate).subscribe(_order => {
-      console.log(_order);
+      //console.log(_order);
       order.status = 'cancelled';
       this._snackBar.open('Your order was cancelled.', 'Ok', {duration: 3000});
     });
